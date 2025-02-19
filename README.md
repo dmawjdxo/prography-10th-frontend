@@ -9,16 +9,19 @@
    터미널에서 아래 명령어를 통해 레포지토리를 클론합니다.
    ```bash
    git clone https://github.com/dmawjdxo/prography-10th-frontend.git
+   
 프로젝트 디렉토리로 이동
 클론한 디렉토리로 이동합니다.
 
 ```bash
 cd prography-10th-frontend
+
 의존성 설치
 아래 명령어로 필요한 패키지를 설치합니다.
 
 ```bash
 npm install
+
 개발 서버 실행
 아래 명령어를 통해 개발 서버를 실행합니다.
 
