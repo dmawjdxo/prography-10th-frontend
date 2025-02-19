@@ -7,9 +7,10 @@ import { Header, Main } from '../../style/globalStyles';
 import { BtnContainer, FormContainer, StepBar } from './styled';
 import { useFormStore } from '../../store/useFormStore';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const ApplicationForm: React.FC = () => {
-    const navigete = useNavigate();
+    const navigate = useNavigate();
     const [step, setStep] = useState(1);
     const { privacyConsent, name, email, phone, appliedPositions } = useFormStore((state) => state);
     // 이메일 유효성 검사 정규식
@@ -17,7 +18,7 @@ const ApplicationForm: React.FC = () => {
     // 전화번호 유효성 검사 정규식 (예: 010-1234-5678)
     const phoneRegex = /^010-\d{4}-\d{4}$/;
 
-    const handleNext = () => {
+    const handleNext = async () => {
         if (step === 1) {
             if (privacyConsent) setStep(2);
             else return alert('개인정보 수집을 동의 해주세요.');
@@ -28,7 +29,32 @@ const ApplicationForm: React.FC = () => {
             else setStep(3);
         } else if (step === 3) {
             if (appliedPositions) {
-                navigete('/complete');
+                const formData = {
+                    privacyConsent,
+                    name,
+                    email,
+                    phone,
+                    appliedPositions,
+                };
+                console.log(formData);
+
+                // try {
+                //     const response = await axios.post(
+                //         'https://api.example.com/applications',
+                //         formData,
+                //         {
+                //             headers: {
+                //                 'Content-Type': 'application/json',
+                //             },
+                //         }
+                //     );
+                //     // API 요청 성공 시 제출 완료 페이지로 이동
+                //     response && navigate('/complete');
+                // } catch (error) {
+                //     console.error('Submission error:', error);
+                //     alert('지원서 제출 중 오류가 발생했습니다.');
+                // }
+                navigate('/complete');
             } else {
                 alert('지원 분야를 선택해주세요.');
             }
