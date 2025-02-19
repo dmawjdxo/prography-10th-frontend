@@ -3,24 +3,41 @@ import React, { useState } from 'react';
 import PersonalInfoForm from '../../components/PersonalInfoForm/PersonalInfoForm';
 import ApplicationInfoForm from '../../components/ApplicationInfoForm/ApplicationInfoForm';
 import PrivacyConsentForm from '../../components/PrivacyConsentForm/PrivacyConsentForm';
-import { Main } from '../../style/globalStyles';
-import { FormContainer, Header, StepBar } from './styled';
-import { BtnContainer } from '../../components/PrivacyConsentForm/styled';
+import { Header, Main } from '../../style/globalStyles';
+import { BtnContainer, FormContainer, StepBar } from './styled';
+import { useFormStore } from '../../store/useFormStore';
+import { useNavigate } from 'react-router-dom';
 
 const ApplicationForm: React.FC = () => {
+    const navigete = useNavigate();
     const [step, setStep] = useState(1);
+    const { privacyConsent, name, email, phone, appliedPositions } = useFormStore((state) => state);
+    // 이메일 유효성 검사 정규식
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // 전화번호 유효성 검사 정규식 (예: 010-1234-5678)
+    const phoneRegex = /^010-\d{4}-\d{4}$/;
 
-    // 예시 state
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [role, setRole] = useState('');
-    const [consent, setConsent] = useState<boolean | null>(null);
+    const handleNext = () => {
+        if (step === 1) {
+            if (privacyConsent) setStep(2);
+            else return alert('개인정보 수집을 동의 해주세요.');
+        } else if (step === 2) {
+            if (name === '') return alert('이름을 입력해주세요');
+            else if (!emailRegex.test(email)) return alert('이메일 형식이 맞지 않습니다.');
+            else if (!phoneRegex.test(phone)) return alert('전화번호 형식이 맞지 않습니다.');
+            else setStep(3);
+        } else if (step === 3) {
+            if (appliedPositions) {
+                navigete('/complete');
+            } else {
+                alert('지원 분야를 선택해주세요.');
+            }
+        }
+    };
 
-    const goNext = () => setStep((prev) => prev + 1);
-    const goPrev = () => setStep((prev) => prev - 1);
-    console.log(step);
-
+    const handlePrev = () => {
+        if (step > 1) setStep(step - 1);
+    };
     return (
         <Main>
             <Header>Prography 10기 지원서</Header>
@@ -38,41 +55,17 @@ const ApplicationForm: React.FC = () => {
                 </p>
             </StepBar>
             <FormContainer>
-                {step === 1 && (
-                    <PrivacyConsentForm
-                        consent={consent}
-                        onChangeConsent={(value) => setConsent(value)}
-                        onNext={goNext}
-                        onPrev={goPrev}
-                    />
-                )}
-                {step === 2 && (
-                    <PersonalInfoForm
-                        name={name}
-                        email={email}
-                        phone={phone}
-                        onChange={(e) => {
-                            const { name, value } = e.target;
-                            if (name === 'name') setName(value);
-                            if (name === 'email') setEmail(value);
-                            if (name === 'phone') setPhone(value);
-                        }}
-                        onNext={goNext}
-                    />
-                )}
-
-                {step === 3 && (
-                    <ApplicationInfoForm
-                        selectedRole={role}
-                        onSelectRole={(selected) => setRole(selected)}
-                        onNext={goNext}
-                        onPrev={goPrev}
-                    />
-                )}
+                {step === 1 && <PrivacyConsentForm />}
+                {step === 2 && <PersonalInfoForm />}
+                {step === 3 && <ApplicationInfoForm />}
             </FormContainer>
             <BtnContainer>
-                <button type="button">이전</button>
-                <button type="button">다음</button>
+                <button type="button" onClick={handlePrev}>
+                    이전
+                </button>
+                <button type="button" onClick={handleNext}>
+                    {step === 3 ? '제출하기' : '다음'}
+                </button>
             </BtnContainer>
         </Main>
     );

@@ -1,50 +1,35 @@
-# React + TypeScript + Vite
+# Prography 10th Frontend Application Form
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+이 프로젝트는 프로그래피 10기 지원서를 작성하기 위한 폼 애플리케이션입니다.  
+개발 환경 구성 후, 애플리케이션이 정상적으로 동작하는지 아래의 절차를 따라 확인할 수 있습니다.
 
-Currently, two official plugins are available:
+## 설치 및 실행 방법
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. **레포지토리 클론**  
+   터미널에서 아래 명령어를 통해 레포지토리를 클론합니다.
+   ```bash
+   git clone https://github.com/dmawjdxo/prography-10th-frontend.git
+프로젝트 디렉토리로 이동
+클론한 디렉토리로 이동합니다.
 
-## Expanding the ESLint configuration
+bash
+복사
+cd prography-10th-frontend
+의존성 설치
+아래 명령어로 필요한 패키지를 설치합니다.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+bash
+복사
+npm install
+개발 서버 실행
+아래 명령어를 통해 개발 서버를 실행합니다.
 
-- Configure the top-level `parserOptions` property like this:
+bash
+복사
+npm run dev
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+기술 스택
+프레임워크: React, TypeScript
+상태 관리: Zustand
+스타일링: Styled-components
+기타: Vite (개발 서버)

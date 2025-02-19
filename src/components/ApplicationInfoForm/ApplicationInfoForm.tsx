@@ -1,58 +1,43 @@
 // src/components/ApplicationInfoForm.tsx
 
-import React, { ChangeEvent } from 'react';
-import { Button, ButtonContainer, FormContainer, FormSubtitle, FormTitle, RadioGroup, RadioLabel } from './styled';
+import React from 'react';
+import { BoderContainer, FormContainer, FormSubtitle, FormTitle, RadioLabel } from '../../style/globalStyles';
+import { useFormStore } from '../../store/useFormStore';
 
-// -- 타입 정의
-interface ApplicationInfoFormProps {
-  selectedRole: string;
-  onSelectRole: (role: string) => void;
-  onNext: () => void;
-  onPrev?: () => void;
-}
+const roles = ['프론트엔드', '백엔드', '디자인', 'iOS', '안드로이드', 'Product Owner'];
 
-const roles = ["프론트엔드", "백엔드", "디자인", "iOS", "안드로이드", "Product Owner"];
+const ApplicationInfoForm: React.FC = () => {
+    // zustand 스토어에서 appliedPositions와 업데이트 함수를 가져옵니다.
+    const appliedPositions = useFormStore((state) => state.appliedPositions);
+    const setAppliedPositions = useFormStore((state) => state.setAppliedPositions);
 
-const ApplicationInfoForm: React.FC<ApplicationInfoFormProps> = ({
-  selectedRole,
-  onSelectRole,
-  onNext,
-  onPrev
-}) => {
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    onSelectRole(e.target.value);
-  };
+    // 라디오 버튼 선택 시 적용 분야 업데이트
+    const handleRoleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setAppliedPositions(e.target.value as typeof appliedPositions);
+    };
 
-  return (
-    <FormContainer>
-      <FormTitle>지원 정보</FormTitle>
-      <FormSubtitle>지원하고자 하는 분야를 선택해주세요</FormSubtitle>
-
-      <RadioGroup>
-        {roles.map((role) => (
-          <RadioLabel key={role}>
-            <input
-              type="radio"
-              name="role"
-              value={role}
-              checked={selectedRole === role}
-              onChange={handleChange}
-            />
-            {role}
-          </RadioLabel>
-        ))}
-      </RadioGroup>
-
-      <ButtonContainer>
-        {onPrev && <Button onClick={onPrev}>뒤로</Button>}
-        <Button onClick={onNext}>다음</Button>
-        {/* 
-          만약 2단계에서 "제출하기"를 원하면 여기서 버튼명을 변경:
-          <Button onClick={onNext}>제출하기</Button>
-        */}
-      </ButtonContainer>
-    </FormContainer>
-  );
+    return (
+        <FormContainer>
+            <FormTitle>지원 정보</FormTitle>
+            <FormSubtitle>지원하고자 하는 분야를 선택해주세요</FormSubtitle>
+            <BoderContainer>
+                {roles.map((role) => (
+                    <BoderContainer $marginBottom="20px" key={role}>
+                        <RadioLabel>
+                            <input
+                                type="radio"
+                                name="role"
+                                value={role}
+                                checked={appliedPositions === role}
+                                onChange={handleRoleChange}
+                            />
+                            {role}
+                        </RadioLabel>
+                    </BoderContainer>
+                ))}
+            </BoderContainer>
+        </FormContainer>
+    );
 };
 
 export default ApplicationInfoForm;

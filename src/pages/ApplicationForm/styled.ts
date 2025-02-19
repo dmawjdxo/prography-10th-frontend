@@ -1,16 +1,7 @@
 import styled from 'styled-components';
 import { center } from '../../style/globalStyles';
 
-export const Header = styled.header`
-    width: 90%;
-    height: 150px;
-    background-color: white;
-    line-height: 150px;
-    font-size: 40px;
-    font-weight: bold;
-    margin-top: 60px;
-    text-align: center;
-`;
+
 export const StepBar = styled.div<{ $step: number }>`
     display: flex;
     align-items: center;
@@ -78,4 +69,22 @@ export const FormContainer = styled.form`
     padding: 40px 40px 20px;
     background-color: #fff;
     box-sizing:border-box;
+`;
+export const BtnContainer = styled.div`
+    display: flex;
+    padding: 20px;
+    justify-content: space-between;
+    width: 90%;
+    background-color: #fff;
+    box-sizing: border-box;
+    margin: 40px 0 80px;
+    & > button {
+        padding: 15px 25px;
+        background-color: #eee;
+        border-radius: 10px;
+        &:last-child {
+            background-color: var(--main-blue1);
+            color: #fff;
+        }
+    }
 `;

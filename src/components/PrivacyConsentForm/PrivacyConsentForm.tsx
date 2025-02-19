@@ -1,26 +1,23 @@
 // src/components/PrivacyConsentForm.tsx
 
-import React, { ChangeEvent } from 'react';
-import { Button, ButtonContainer, FormContainer, FormSubtitle, FormTitle, InfoBox, RadioLabel } from './styled';
-import { BoderContainer } from '../../style/globalStyles';
+import React from 'react';
+import { BoderContainer, FormContainer, FormSubtitle, FormTitle, RadioLabel } from '../../style/globalStyles';
+import { InfoBox } from './styled';
+import { useFormStore } from '../../store/useFormStore';
 
-// -- 타입 정의
-interface PrivacyConsentFormProps {
-    consent: boolean | null; // true=동의, false=비동의, null=미선택
-    onChangeConsent: (value: boolean) => void;
-    onNext: () => void;
-    onPrev?: () => void;
-}
+const PrivacyConsentForm: React.FC = () => {
+    const privacyConsent = useFormStore((state) => state.privacyConsent);
+    const setPrivacyConsent = useFormStore((state) => state.setPrivacyConsent);
 
-const PrivacyConsentForm: React.FC<PrivacyConsentFormProps> = ({ consent, onChangeConsent, onNext, onPrev }) => {
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        onChangeConsent(e.target.value === 'true');
+    // 라디오 변경 시 privacyConsent를 boolean 값으로 업데이트
+    const handlePrivacyConsentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPrivacyConsent(e.target.value === 'agree');
     };
 
     return (
         <FormContainer>
             <FormTitle>개인정보 수집 동의</FormTitle>
-            <FormSubtitle>프로그라피 10기 지원을 위한 개인정보 수집에 대한 동의가 필요합니다</FormSubtitle>
+            <FormSubtitle>프로그래피 10기 지원을 위한 개인정보 수집에 대한 동의가 필요합니다</FormSubtitle>
             <BoderContainer>
                 <InfoBox>
                     수집 목적: Prography 10기 리쿠르팅 과정 및 결과 안내 <br />
@@ -28,37 +25,35 @@ const PrivacyConsentForm: React.FC<PrivacyConsentFormProps> = ({ consent, onChan
                     보유 및 이용 기간: 리크루팅 과정 종료일(3월 7일) 이후 파기
                     <span>개인정보 수집 동의 여부를 체크해주세요.</span>
                 </InfoBox>
+
+                {/* '동의합니다' 라디오 버튼 */}
                 <BoderContainer $marginBottom="20px">
                     <RadioLabel>
                         <input
                             type="radio"
                             name="privacyConsent"
-                            value="true"
-                            checked={consent === true}
-                            onChange={handleChange}
+                            value="agree"
+                            checked={privacyConsent === true}
+                            onChange={handlePrivacyConsentChange}
                         />
                         개인정보 수집 여부에 동의합니다
                     </RadioLabel>
                 </BoderContainer>
+
+                {/* '동의하지 않습니다' 라디오 버튼 */}
                 <BoderContainer>
                     <RadioLabel>
                         <input
                             type="radio"
                             name="privacyConsent"
-                            value="false"
-                            checked={consent === false}
-                            onChange={handleChange}
+                            value="refuse"
+                            checked={privacyConsent === false}
+                            onChange={handlePrivacyConsentChange}
                         />
                         개인정보 수집 여부에 동의하지 않습니다
                     </RadioLabel>
                 </BoderContainer>
             </BoderContainer>
-
-            {/* <ButtonContainer>
-                {onPrev && <Button onClick={onPrev}>뒤로</Button>}
-                <Button onClick={onNext}>다음</Button>
-           
-            </ButtonContainer> */}
         </FormContainer>
     );
 };
